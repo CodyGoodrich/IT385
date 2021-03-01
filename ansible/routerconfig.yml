@@ -9,10 +9,17 @@
       - en
       - conf t
       - int g1
+      - hostname CSR1
+      - no ip domain-lookup
       - ip addr 192.168.0.11 255.255.255.0
+      - enable secret class
+      - service password-encrytion
+      - banner "warning unauthorized access is prohibited"
       - no shut
       - desc this is awsome
       - do wr mem
+      - line vty
+      - exec-timeout 5
       - exit
 - host: CSR2
   gather_facts: false
@@ -23,8 +30,16 @@
         - en
         - conf t
         - int g2
+        - hostname CSR2
+        - no ip domain-lookup
         - ip addr 192.168.0.12 255.255.255.0
+        - enable secret class
+        - service password-encrytion
+        - banner "warning unauthorized access is prohibited"
+        - no shut 
         - no shut
         - desc this is awsome
         - do wr mem
+        - line vty 
+        - exec-timout 5
         - exit
