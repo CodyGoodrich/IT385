@@ -1,0 +1,30 @@
+---
+- host: CSR1
+  gather_facts: false
+  connection: local
+  tasks:
+    name: show run
+    ios command:
+      commands:
+      - en
+      - conf t
+      - int g1
+      - ip addr 192.168.0.11 255.255.255.0
+      - no shut
+      - desc this is awsome
+      - do wr mem
+      - exit
+- host: CSR2
+  gather_facts: false
+  connection: local
+  tasks:
+    name: show run
+    ios command:
+        - en
+        - conf t
+        - int g2
+        - ip addr 192.168.0.12 255.255.255.0
+        - no shut
+        - desc this is awsome
+        - do wr mem
+        - exit
