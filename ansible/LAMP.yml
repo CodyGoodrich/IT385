@@ -1,0 +1,66 @@
+---
+- host: linux
+  task:
+  - name: Create user (egoad/Rubberduck!)
+    user:
+      name: egoad
+      Password: RubberDuck!       # This password wont work
+    become: yes
+  - name: Create second user (ddevito/GetShorty!)
+    become: yes
+    user: 
+      name: ddevito
+      password: "{{ 'GetShorty!' | password_hash('sha512') }}"
+  - name: Create third user (webAdmin/encrypted password)
+    become: yes
+    user:
+      name: webAdmin 
+      Password: '$6$A4K9cQoHVPaUK6XI$bbAPM1MFNsKyJ0Izx/NGQcJzsKWKQBekDiJgi0HP3Jy./gTrffIL8dWVyM5sUDze7aCKT2ocl9SX6YCyLt051'
+      
+- host: db
+  tasks:
+  - name: Install MariaDB
+    become: yes
+    apt:
+      name: mariadb-server
+      state: present
+  - name:Enable mariaDB (set to autostart)
+    become: yes
+    servive:
+      name: mariadb
+      enabled: yes
+  - name: start mariaDB
+    become: yes
+    service:
+      name: mariadb
+      state: started
+      
+- hosts: web
+  tasks:
+  - name: install apache
+    become: yes
+    apt: name=apache2 state=present
+  - name: Set apache to run
+    become: yes
+    service: name=apache2 state=started enabled=yes
+  - name: Configure firewall to open http
+    become: yes
+    ufw:
+      rule: allow
+      port: 80
+      proto: tcp
+  
+  - name: Configure firewall to allow ssh
+    become: yes
+    ufw:
+      rule: allow
+      port: 22
+      proto: ssh
+    
+  handlers:
+    - name: restart-firewall
+      become: yes
+      ufw:
+        state: reloaded
+     notify:
+    - restart-firewall
