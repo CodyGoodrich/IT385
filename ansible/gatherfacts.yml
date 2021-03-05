@@ -1,9 +1,8 @@
 ---
 - name: Reboot web after 10 min 
   hosts: web
-  gather_facts: no
-  remote_user: sudo
-  become: true
+  gather_facts: false
+  become: yes
  
   tasks:
     - name: Reboot the machine (Wait for 10 min)
