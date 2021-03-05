@@ -1,4 +1,11 @@
-- name: web
-  reboot:
-    reboot_timeout: 3600
-  become: yes
+---
+- name: Reboot web after 10 min 
+  hosts: web
+  gather_facts: no
+  remote_user: sudo
+  become: true
+ 
+  tasks:
+    - name: Reboot the machine (Wait for 10 min)
+      reboot:
+        reboot_timeout: 600
