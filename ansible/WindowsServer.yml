@@ -18,9 +18,25 @@
       include_sub_features: yes
       include_management_tools: yes
    
-   - name: download 7zip
-   hosts: WindowsServer
-   gather_facts: true
-   tasks:
+  - name: Install 7-zip
+   become: yes
+   apt:
+     name: 7-Zip
+     state: present
+      
+  - name: Windows Updates
+  hosts: WindowsServer
+  connection: winrm
+  tasks:
+    win_updates:
+      category_names:
+        - CriticalUpdates
+        - DefinitionUpdates
+        - SecurityUpdates
+        - Updates
+      whitelist:
+        - KB4022723
+    reboot: yes
+    reboot_timeout: 600
      
    
