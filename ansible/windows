@@ -1,4 +1,5 @@
 ---
+
 - host: WindowsServer
   task:
   - name: Create user (egoad/Rubberduck!)
