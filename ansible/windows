@@ -1,0 +1,23 @@
+---
+- host: WindowsServer
+  task:
+  - name: Create user (egoad/Rubberduck!)
+    user:
+      name: egoad
+      Password: RubberDuck!       
+    become: yes
+
+  - name: Install IIS
+  hosts: WindowsServer
+  gather_facts: true
+  tasks:
+   - win_feature:
+     name: "windows"
+     state: present
+     restart: yes
+     include_sub_features: yes
+     include_management_tools: yes
+   
+   - name: download 7zip
+   hosts: WindowsServer
+  
